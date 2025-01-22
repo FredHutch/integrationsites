@@ -1,0 +1,118 @@
+body, html {
+	margin:0;
+	padding:0;
+	background:#FFFFFF;
+	color:#000;
+}
+
+body {
+	min-width:1000px;
+}
+
+body, p {
+	font-family : Verdana, Trebuchet MS, Arial, Helvetica, sans-serif;
+	font-size   : 12px;
+	margin		: 0px;
+}
+
+h2 {
+	font-size: 15px
+}
+
+a:visited, a:link, a:hover  {
+	font-family : Verdana, Trebuchet MS, Arial, Helvetica, sans-serif;
+}
+
+a:visited, a:link {
+   text-decoration : none;
+   color           : blue;
+}
+
+a:hover  {
+	color           : blue;
+	text-decoration : underline;
+}
+
+
+div.header {
+	background-color : #FFFFFF;
+	height: 40px;
+	padding: 20px;
+}
+
+
+a.nav {
+	background-color : #1f669b;
+	margin-left: 30px;	
+}
+
+a.nav:visited, a.nav:link {
+   text-decoration : none;
+   color           : white;
+}
+
+a.nav:hover  {
+	color           : white;
+	text-decoration : underline;
+}
+
+
+table.font {
+	font-family: Verdana, Trebuchet MS, Arial;
+	font-size: 10px;
+}
+
+.logo {
+   font-size   : 30px;
+   font-weight : bold;
+   margin-left : 30px;
+}
+
+p {
+	margin-bottom: 10px
+}
+
+pre {
+	margin-left: 10px
+}
+
+hr {
+	border: 0;
+	width: 100%;
+	color: #1f669b;
+	background-color: #1f669b;
+	height: 2px;
+}
+
+input, textarea, select {
+	font-size: 11px;
+	
+}
+
+div.spacer {
+	clear: both;
+}
+
+#indent {
+	background:#FFFFFF;
+	margin: 10px 30px 10px 30px;
+}
+
+#nav {
+	background:#1f669b;
+	padding:4px;
+	color:white;
+}
+
+#footer {
+	background:#FFF;
+	border-top:1px solid #1f669b;
+	border-bottom:1px solid #1f669b;
+	clear:both;
+}
+
+#footer p {
+	margin: 5px 10px 5px 10px;
+	font-size: 11px;
+	color: gray;
+}

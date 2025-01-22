@@ -1,0 +1,6 @@
+table.sortable thead {
+    background-color:#3388BB;
+    color:white;
+    font-weight: bold;
+    cursor: pointer;
+}
