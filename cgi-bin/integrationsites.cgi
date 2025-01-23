@@ -144,9 +144,9 @@ if ($query || $queryFile) {
 		exit;
 	}
 
-	my $hgDb = "/usr/local/apache2/htdocs/human_genome/$hg/$hg";
-	my $gffFile = "/usr/local/apache2/htdocs/human_genome/$hg/$hg"."_region_gene.gff";
-	my $hivDb = "/usr/local/apache2/htdocs/HXB2_db/HXB2";
+	my $hgDb = "/usr/local/apache2/htdocs/human_genome/$hg/$hg"."_genomic.fna";
+	my $gffFile = "/usr/local/apache2/htdocs/human_genome/$hg/$hg"."_gene.gff";
+	my $hivDb = "/usr/local/apache2/htdocs/HXB2/HXB2.fasta";
 	my @params = ();
 	push @params, $id, $email, $remote_addr, $uploadQueryFile, $outFile, $hgDb, $hivDb, $gffFile, $uploadDir, $localDir, $trim, $ltr, $blast;
 
