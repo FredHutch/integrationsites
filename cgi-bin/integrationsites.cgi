@@ -3,11 +3,7 @@
 use CGI;
 use CGI::Carp 'fatalsToBrowser';
 use File::Temp;
-#use Cwd;
-#use Template;
 use strict;
-#use POSIX ":sys_wait_h";
-#use lib "/opt/home/wdeng/lib/perl5/site_perl/5.8.8";
 use File::Basename;
 
 my $uploadBase = '/usr/local/apache2/htdocs/outputs/';
@@ -35,29 +31,10 @@ my $hg = $q->param("hg");
 my $dot = $q->param('dot') || 0;
 my $remote_addr = '';
 
-#my $cwd = cwd();
-
 my $outFile = $uploadDir."$id.txt";
 my $localDir = basename(dirname(__FILE__));
 my $toggle = $uploadDir.'flag';
-#print "ip: $remote_ip\n";
-#print "localDir: $localDir\n";
-#my $local = dirname(__FILE__);
-#print "local: $local\n";
-=begin
-print "id: $id\n";
-print "uploaddir: $uploadDir\n";
-print "toggle: $toggle\n";
-if(!-e $toggle) {
-	print "No toggle\n";
-}else {
-	print "toggle here\n";
-}
-=cut
-#my $cdir = cwd();
-#print "dir: $cdir\n";
-#print "base: $uploadBase\n";
-#exit;
+
 print <<END_HTML;
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -78,7 +55,7 @@ print <<END_HTML;
 	<div id='nav'>
 		<span class='nav'><a href="/" class="nav">Home</a></span>
 		<span class='nav'><a href="/contact.html" class="nav">Contact</a></span>
-		<span class='nav'><a href="/IS_tool_instructions.pdf" class="nav">Help</a></span>
+		<span class='nav'><a href="/docs/IS_tool_instructions.pdf" class="nav">Help</a></span>
 	</div>
 
 	<div id='indent'>
