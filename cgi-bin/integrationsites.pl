@@ -303,9 +303,9 @@ print STAT "$finishTime\t$id\t$remote_addr\t$emailAddr\n";
 close STAT;
 
 if ($emailAddr) {
-	my $body = "<p>Your job #$id has finished on our server. Please click <a href=/cgi-bin/integrationsites.cgi?id=$id>
+	my $body = "<p>Your job #$id has finished on our server. Please click <a href=https://integrationsites.fredhutch.org/cgi-bin/integrationsites.cgi?id=$id>
 	here</a> to get result.</p><p>If the link does not work, please copy and paste following URL to your browser to get your result: 
-	<a href=/cgi-bin/integrationsites.cgi?id=$id>https://integrationsites.fredhutch.org/cgi-bin/integrationsites.cgi?id=$id
+	<a href=https://integrationsites.fredhutch.org/cgi-bin/integrationsites.cgi?id=$id>https://integrationsites.fredhutch.org/cgi-bin/integrationsites.cgi?id=$id
 	</a></p><p>The result will be kept for 5 days after this message was sent.</p>
 	<p>If you have any questions please email to mullspt\@uw.edu. Thanks.</p>";
 
