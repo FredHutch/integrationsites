@@ -1,12 +1,14 @@
 #!/usr/bin/perl
 
 use strict;
-#use Email::Sender::Simple qw(sendmail);
-#use Email::Simple;
-#use Email::Simple::Creator;
+use warnings;
+use Email::Sender::Simple qw(sendmail);
+use Email::Sender::Transport::SMTP qw();
+use Email::Simple;
+use Email::Simple::Creator; # For creating the email
 
 my $id              = shift;
-my $email           = shift;
+my $emailAddr       = shift;
 my $remote_addr     = shift; 
 my $uploadQueryFile = shift;
 my $outFile         = shift;
@@ -20,11 +22,10 @@ my $ltr             = shift;
 my $blast             = shift;
 my $downloadfile    = $uploadDir.$id.'_download.txt';
 my $logFile = $uploadDir.$id.'.log';
-#print "downloadfile: $downloadfile\n";
-#print "logFile: $logFile\n";
+
 open LOG, ">", $logFile or die "couldn't open $logFile: $!\n";
 print LOG "id: $id\n";
-print LOG "email: $email\n";
+print LOG "email: $emailAddr\n";
 print LOG "remote_addr: $remote_addr\n";
 print LOG "uploadQueryFile: $uploadQueryFile\n";
 print LOG "outFile: $outFile\n";
@@ -296,25 +297,54 @@ close TOGGLE;
 
 my $finishTime = localtime();
 chomp $finishTime;
-#my $statDir = "/opt/htdocs/Stats/$localDir";
-#unless (-e $statDir) {
-	#mkdir $statDir;
-	#chmod 0775, $statDir;
-#}
 my $statFile = "/usr/local/apache2/htdocs/stats/integrationsites.stat";
 open STAT, ">>", $statFile or die "couldn't open $statFile: $!\n";
-print STAT "$finishTime\t$id\t$remote_addr\t$email\n";
+print STAT "$finishTime\t$id\t$remote_addr\t$emailAddr\n";
 close STAT;
-#exit;
-if ($email) {
+
+if ($emailAddr) {
 	my $body = "<p>Your job #$id has finished on our server. Please click <a href=/cgi-bin/integrationsites.cgi?id=$id>
 	here</a> to get result.</p><p>If the link does not work, please copy and paste following URL to your browser to get your result: 
-	<a href=/cgi-bin/integrationsites.cgi?id=$id>http://indra.mullins.microbiol.washington.edu/cgi-bin/$localDir/integrationsites.cgi?id=$id
-	</a></p><p>The result will be kept at least 5 days after this message was sent.</p>
+	<a href=/cgi-bin/integrationsites.cgi?id=$id>https://integrationsites.fredhutch.org/cgi-bin/integrationsites.cgi?id=$id
+	</a></p><p>The result will be kept for 5 days after this message was sent.</p>
 	<p>If you have any questions please email to mullspt\@uw.edu. Thanks.</p>";
+
+	# Create the email
+	my $email = Email::Simple->create(
+		header => [
+			#To => '"Recipient Name" <recipient@fredhutch.org>',
+			#From => '"Sender Name" <sender@fredhutch.org>',
+			To => $emailAddr,
+			From => 'integrationsites@fredhutch.org',
+			Subject => "Your Web Integration Sites #$id Results",
+		],
+		body => $body,
+	);
+	$email->header_set( 'Content-Type' => 'Text/html' );
+	$email->header_set( 'Reply-To' => 'mullspt@uw.edu' );
+	
+	# Configure the SMTP transport
+	my $transport = Email::Sender::Transport::SMTP->new({
+		host => 'mx.fhcrc.org', # Your SMTP server address
+		port => 25, # Common ports are 25, 465, or 587
+		ssl => 0, # Set to 1 if SSL is required
+		# sasl_username => 'your_username', # Your SMTP username
+		#sasl_password => 'your_password', # Your SMTP password
+	});
+	
+	# Send the email
+	eval {
+		sendmail($email, { transport => $transport });
+		print "Email sent successfully!\n";
+	};
+	if ($@) {
+		die "Failed to send email: $@\n";
+	}
+
+=begin
 	my $sendEmail = Email::Simple->create(
 		header => [
-			To => $email,
+			To => $emailAddr,
 			From => 'IntegrationSites@uw.edu',
 			Subject => "Your Web Integration Sites #$id Results",
 		],
@@ -323,6 +353,7 @@ if ($email) {
 	$sendEmail->header_set( 'Content-Type' => 'Text/html' );
 	$sendEmail->header_set( 'Reply-To' => 'mullspt@uw.edu' );
 	sendmail($sendEmail);
+=cut
 }
 
 
@@ -332,7 +363,7 @@ sub parseGenomeXML {
 	my $hgDb = shift;
 	my $hitDef = my $chromoid = my $asblinfo = my $asblid = my $hframe = '';	
 	my $bitscore = my $primarymaxscore = my $alternatemaxscore = my $unplacemaxscore = 0;
-	my $qlen = my $identity = my $qfrom = my $qto = my $hfrom = my $hto = my $hframe = my $gaps = 0;
+	my $qlen = my $identity = my $qfrom = my $qto = my $hfrom = my $hto = my $gaps = 0;
 	my $scoreflag = my $pflag = my $aflag = my $uflag = 0;
 	my (@primaryinfo, @alternateinfo, @unplaceinfo);	
 	open XML, $xml or die "couldn't open $xml: $!\n";
