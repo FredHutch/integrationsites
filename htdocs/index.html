@@ -37,7 +37,7 @@
 		<form enctype='multipart/form-data' action='/cgi-bin/integrationsites.cgi' method='post' onsubmit="return checkForm(this);">
 		<div>
 			<p>Enter your email address&nbsp;(Optional): <input type=text name="email" size=40></p>
-			<p>Enter query sequences here in <a href='docs/parameters.html#format'>Fasta format</a></p>
+			<p>Enter query sequences here in Fasta format</p>
 
 			<p><textarea name='querySeq' rows='10' cols='80'></textarea></p>
 			<p>Or upload sequence fasta file (Max. 1M): <input type='file' name='queryFile'></p>
@@ -65,9 +65,9 @@
 		<br>
 		<hr>
 		<h3>Description:</h3>
-		<p>The Integration Sites program developed in the Mullins Lab at the University of Washington is a bioinformatics tool 
+		<p>The Integration Sites program is a bioinformatics tool 
 		used to detect the integration sites of HIV into the human genome. After the user uploads a FASTA file with the query 
-		sequences, the program performs a BLAST search against the human genome (GRCh38.p2 or GRCh37.p5 reference 
+		sequences, the program performs a BLAST search against the human genome (GRCh38.p14, T2T-CHM13v2.0 or GRCh37.p13 reference 
 		assembly) and outputs the information shown in the example output below. If a sequence is not found in the human genome, 
 		the program will then BLAST against the HIV HXB2 sequence. If "Trim LTR sequence first" is checked, the program will look for 
 		the sequence of "TCTCTAGCA", a conserved sequence at the 3' end of the LTR,  and trim it along with the adjacent viral sequence if the 3'LTR is selected, 
@@ -83,7 +83,7 @@
 	</div>
 	
 	<div id="footer">
-		<p class="copyright">&copy; 2015 Mullins Lab, University of Washington. All rights reserved.</p>
+		<p class="copyright">&copy; 2025 Fred Hutch Cancer Center. All rights reserved.</p>
 	</div>
 </div>
 
