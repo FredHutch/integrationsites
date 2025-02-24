@@ -11,6 +11,9 @@ my $statsFile = '/usr/local/apache2/htdocs/stats/integrationsites.stat';
 
 my $q = new CGI;
 
+# flush stdout after every write
+$| = 1;
+
 print $q->header;
 
 my $remote_ip = $ENV{'REMOTE_ADDR'};
