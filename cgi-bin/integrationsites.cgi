@@ -5,6 +5,7 @@ use CGI::Carp 'fatalsToBrowser';
 use File::Temp;
 use strict;
 use File::Basename;
+use POSIX qw(setsid);
 
 my $uploadBase = '/usr/local/apache2/htdocs/outputs/';
 my $statsFile = '/usr/local/apache2/htdocs/stats/integrationsites.stat';
@@ -62,11 +63,11 @@ print <<END_HTML;
 	</div>
 
 	<div id='indent'>
-	
+
 END_HTML
 
 if ($query || $queryFile) {
-	$remote_addr = $ENV{'REMOTE_ADDR'};		
+	$remote_addr = $ENV{'REMOTE_ADDR'};
 	if ($email =~ /^\s*$/) {
 		$email = '';
 	}else {
@@ -81,7 +82,7 @@ if ($query || $queryFile) {
  		}elsif ($query =~ /\r/) {
  			$query =~ s/\r/\n/g;
  		}
- 		@lines = split /\n/, $query; 				
+ 		@lines = split /\n/, $query;
 	}elsif ($queryFile) {
 		my $queryFile_handle = $q->upload("queryFile");
 		while (my $line = <$queryFile_handle>) {
@@ -90,7 +91,7 @@ if ($query || $queryFile) {
 		}
 	}
 	my $uploadQueryFile = $uploadDir."$id.fasta";
-	
+
 	foreach my $line (@lines) {
 		if ($line) {
 			if ($line =~ /^>/) {
@@ -110,8 +111,8 @@ if ($query || $queryFile) {
 		foreach my $line (@lines) {
 			if ($line) {
 				print OUT "$line\n";
-			}			
-		}	
+			}
+		}
 		close OUT;
 	}else {
 		print "<br><p>Error: input sequence is not in fasta format</p>";
@@ -130,19 +131,39 @@ if ($query || $queryFile) {
 	my @params = ();
 	push @params, $id, $email, $remote_addr, $uploadQueryFile, $outFile, $hgDb, $hivDb, $gffFile, $uploadDir, $localDir, $trim, $ltr, $blast;
 
-	my $pid = fork();
+        # First fork.
+        my $pid = fork();
+        die "Failed to fork: $!" unless defined $pid;
 
-	die "Failed to fork: $!" unless defined $pid;
+        if ($pid == 0) {
+            # First child.
+            setsid() or die "Can't start a new session: $!";
 
-	if ($pid == 0) {
-		# Child process
-		exec ("perl", "integrationsites.pl", @params);
-		exit(0);
-	} #else {
-		# Parent process
-		#print "Parent process waiting for child to complete...\n";
-		#waitpid($pid, 0);
-		#print "Parent process completed\n";
+            # Second fork.
+            my $pid2 = fork();
+            die "Failed to fork second time: $!" unless defined $pid2;
+
+            if ($pid2) {
+                # First child exits immediately.
+                exit(0);
+            }
+
+            # In the grandchild: close inherited file descriptors.
+            close(STDOUT);
+            close(STDERR);
+
+            # Optionally, redirect STDOUT/STDERR to /dev/null.
+            open(STDOUT, '>', '/dev/null') or die "Can't redirect STDOUT: $!";
+            open(STDERR, '>', '/dev/null') or die "Can't redirect STDERR: $!";
+
+            # Execute the background process.
+            exec("perl", "integrationsites.pl", @params)
+            or die "Exec failed: $!";
+        }
+        # Parent process waits for the first child.
+        waitpid($pid, 0);
+
+
 }
 if(!-e $toggle) {
 	print "<div>";
@@ -156,7 +177,7 @@ if(!-e $toggle) {
 		print "<p>You can close browser if you want.";
 	}else {
 		print "<p>Please wait here to watch the progress of your job.</p>";
-		print "<p>This page will update itself automatically until job is done.</p>";	
+		print "<p>This page will update itself automatically until job is done.</p>";
 	}
 	print "<script>";
 		print "function autoRefresh() {";
