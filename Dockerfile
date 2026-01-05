@@ -52,10 +52,10 @@ RUN echo "LoadModule cgi_module modules/mod_cgi.so" >> /usr/local/apache2/conf/h
 
 # install NCBI's blast executables
 WORKDIR /usr/local/apache2/htdocs
-RUN wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-x64-linux.tar.gz && \
-    tar -xzf ncbi-blast-2.16.0+-x64-linux.tar.gz && \
-    mv ncbi-blast-2.16.0+ ncbi-blast && \
-    rm ncbi-blast-2.16.0+-x64-linux.tar.gz
+RUN wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.17.0+-x64-linux.tar.gz && \
+    tar -xzf ncbi-blast-2.17.0+-x64-linux.tar.gz && \
+    mv ncbi-blast-2.17.0+ ncbi-blast && \
+    rm ncbi-blast-2.17.0+-x64-linux.tar.gz
 
 # makeblastdb for HXB2
 WORKDIR /usr/local/apache2/htdocs/HXB2
