@@ -119,7 +119,7 @@ if ($query || $queryFile) {
 		print "</br>";
 		print "</div>";
 		print "<div id='footer'>";
-		print "<p class='copyright'>&copy; 2015 Mullins Lab, University of Washington. All rights reserved.</p>";
+		print "<p class='copyright'>&copy; 2025 Fred Hutch Cancer Center. All rights reserved.</p>";
 		print "</div>";
 		print "</div></body></html>";
 		exit;
@@ -216,5 +216,5 @@ if (-e $toggle && -s $outFile) {
 print "</div>";
 print "<br></br>";
 print "<div id='footer'>";
-print "<p class='copyright'>&copy; 2015 Mullins Lab, University of Washington. All rights reserved.</p>";
+print "<p class='copyright'>&copy; 2025 Fred Hutch Cancer Center. All rights reserved.</p>";
 print "</div></body></html>";

@@ -56,7 +56,7 @@ ENV BLAST_VERSION=2.17.0
 # Download and install BLAST+
 RUN wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${BLAST_VERSION}/ncbi-blast-${BLAST_VERSION}+-x64-linux.tar.gz && \
     tar -xzf ncbi-blast-${BLAST_VERSION}+-x64-linux.tar.gz && \
-    mv ncbi-blast-${BLAST_VERSION}+ ncbi-blast && \
+    mv ncbi-blast-${BLAST_VERSION}+ /usr/local/apache2/htdocs/ncbi-blast && \
     rm ncbi-blast-${BLAST_VERSION}+-x64-linux.tar.gz
 
 # makeblastdb for HXB2

@@ -307,7 +307,7 @@ if ($emailAddr) {
 	here</a> to get result.</p><p>If the link does not work, please copy and paste following URL to your browser to get your result: 
 	<a href=https://integrationsites.fredhutch.org/cgi-bin/integrationsites.cgi?id=$id>https://integrationsites.fredhutch.org/cgi-bin/integrationsites.cgi?id=$id
 	</a></p><p>The result will be kept for 5 days after this message was sent.</p>
-	<p>If you have any questions please email to mullspt\@uw.edu. Thanks.</p>";
+	<p>If you have any questions please email to cohnlabsupport\@fredhutch.org. Thanks.</p>";
 
 	# Create the email
 	my $email = Email::Simple->create(
@@ -321,7 +321,7 @@ if ($emailAddr) {
 		body => $body,
 	);
 	$email->header_set( 'Content-Type' => 'Text/html' );
-	$email->header_set( 'Reply-To' => 'mullspt@uw.edu' );
+	$email->header_set( 'Reply-To' => 'cohnlabsupport@fredhutch.org' );
 	
 	# Configure the SMTP transport
 	my $transport = Email::Sender::Transport::SMTP->new({
@@ -340,20 +340,6 @@ if ($emailAddr) {
 	if ($@) {
 		die "Failed to send email: $@\n";
 	}
-
-=begin
-	my $sendEmail = Email::Simple->create(
-		header => [
-			To => $emailAddr,
-			From => 'IntegrationSites@uw.edu',
-			Subject => "Your Web Integration Sites #$id Results",
-		],
-		body => $body,
-	);
-	$sendEmail->header_set( 'Content-Type' => 'Text/html' );
-	$sendEmail->header_set( 'Reply-To' => 'mullspt@uw.edu' );
-	sendmail($sendEmail);
-=cut
 }
 
 
