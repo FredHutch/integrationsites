@@ -50,12 +50,14 @@ RUN echo "LoadModule cgi_module modules/mod_cgi.so" >> /usr/local/apache2/conf/h
     sed -i '/<Directory "\/usr\/local\/apache2\/htdocs">/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /usr/local/apache2/conf/httpd.conf && \
     sed -i '/<Directory "\/usr\/local\/apache2\/cgi-bin">/,/<\/Directory>/ s/Options None/Options +ExecCGI/' /usr/local/apache2/conf/httpd.conf
 
-# install NCBI's blast executables
-WORKDIR /usr/local/apache2/htdocs
-RUN wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.17.0+-x64-linux.tar.gz && \
-    tar -xzf ncbi-blast-2.17.0+-x64-linux.tar.gz && \
-    mv ncbi-blast-2.17.0+ ncbi-blast && \
-    rm ncbi-blast-2.17.0+-x64-linux.tar.gz
+# Set BLAST version (update this to the latest version as needed)
+ENV BLAST_VERSION=2.17.0
+
+# Download and install BLAST+
+RUN wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${BLAST_VERSION}/ncbi-blast-${BLAST_VERSION}+-x64-linux.tar.gz && \
+    tar -xzf ncbi-blast-${BLAST_VERSION}+-x64-linux.tar.gz && \
+    mv ncbi-blast-${BLAST_VERSION}+ ncbi-blast && \
+    rm ncbi-blast-${BLAST_VERSION}+-x64-linux.tar.gz
 
 # makeblastdb for HXB2
 WORKDIR /usr/local/apache2/htdocs/HXB2
